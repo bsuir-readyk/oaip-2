@@ -9,11 +9,11 @@ program SolveExpression;
 uses
   SysUtils;
 
-function solution(x: Int, n: Int): Int;
-var:
-	powXS: Int;
+function solution(x: Double; n: Integer): Double;
+var
+	powXS: Double;
 	res: Double;
-	cnt: Int;
+	cnt: Integer;
 begin
 	if (x < 0) then
 	begin
@@ -21,30 +21,25 @@ begin
 	end
 	else
 	begin
+		powXS := x * x; 
+		res := powXS / (Exp(Ln(x) / 3) + 1);
+		cnt := 0;
 
-		else
+		while (n - cnt >= 3) do
 		begin
-			let powXS = x * x; 
-			let res = powXS / (Exp(Ln(x) / 3) + 1);
-			let cnt = 0;
-
-			while (n - cnt >= 3) do
-			begin
-				cnt := cnt + 1;
-				powXS := powXS * x;
-				res := powXS / (Exp(Ln(x) / (cnt + 2)) + res)
-			end
-		end;
+			cnt := cnt + 1;
+			powXS := powXS * x;
+			res := powXS / (Exp(Ln(x) / (cnt + 2)) + res)
+		end
 	end;
-
 
 	Result := res;
 end;
 
 
-procedure main(n: Int);
-var:
-	n: Int;
+procedure main();
+var
+	n: Integer;
 	x: Double;
 begin
 	Read(n);
@@ -57,15 +52,14 @@ begin
 		x := 0.5;
 		while(x < 0.8 + x/1e6) do
 		begin
-			WriteLn(Format('n=%d    x=%d    y=%g', [n, x, solution(x, n)]));
+			WriteLn(Format('n=%d    x=%f    y=%f', [n, x, solution(x, n)]));
 			x := x + 0.05;
-			x := x - x % 1;
-		end;
+		end
 	end;
-	ReadLn;
+	ReadLn
 end;
 
 begin
 	main;
-end;
+end.
 
