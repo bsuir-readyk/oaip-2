@@ -11,7 +11,7 @@ uses
 
 function solution(x: Double; n: Integer): Double;
 var
-	powXS: Double;
+	powXS: Double; 
 	res: Double;
 	cnt: Integer;
 begin
@@ -42,7 +42,8 @@ var
 	n: Integer;
 	x: Double;
 begin
-	Read(n);
+	WriteLn('n: ');
+  Read(n);
 	if (n < 2) then
 	begin
 		WriteLn('cant be < 2')
@@ -56,6 +57,8 @@ begin
 			x := x + 0.05;
 		end
 	end;
+
+	ReadLn;
 	ReadLn
 end;
 
