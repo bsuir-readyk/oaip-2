@@ -1,37 +1,12 @@
-function Solve(n, x: Double): Double;
-var
-  k: Integer;
-  xk: Double;
-  x2k1: Double;
-  sumRes: Double;
-  cosRes: Double;
-begin 
-  k := 1;
-  xk := x;
-  x2k1 := x;
-  sumRes := 0;
-
-  while k <= n do
-  begin
-    sumRes += Exp(2 / 3 - k) / Sqrt(xk + x2k1);
-    xk := xk * x;
-    x2k1 := x2k1 * x * x;
-    Inc(k);
-  end;
-
-  cosRes := Cos(x * Pi / n);
-  Result := Exp(Ln(1 + cosRes * cosRes) / 3) * sumRes;
-end;
+Uses sysutils;
 
 function Cos(x: Double): Double;
 var
   cur: Double;
   xn: Double;
-  factn: Double;
+  factn: Integer;
   cnt: Integer;
   res: Double;
-const
-  E = 1 / 1e4;
 begin
   cur := 1;
   xn := x * x;
@@ -39,33 +14,51 @@ begin
   cnt := 2;
   res := cur;
 
-  while Abs(cur - xn / factn) > E do
+  while Abs(cur - xn / factn) > 1/1e6 do
   begin
     cur := xn / factn;
     if cnt mod 2 = 0 then
-      res := res - cur
+      res := res - cnt
     else
-      res := res + cur;
-    Inc(cnt);
+      res := res + cnt;
+    cnt := cnt + 1;
     xn := xn * x;
     factn := factn * cnt;
   end;
-  Result := res;
+
+  Cos := res;
 end;
 
+function Solve(x: Double; n: Integer): Double;
 var
-  x: Integer;
-  n: Integer;
+  k: Integer;
+  xk: Double;
+  x2k1: Double;
+  sumRes: Double;
+  cosRes: Double;
 begin
-  Write('x: ');
-  ReadLn(x);
-  Write('n: ');
-  ReadLn(n);
-
-  if x <> 0 then
-    WriteLn(Format('%f4', [Solve(x, n)]))
-  else
-    WriteLn('x should be != 0');
+  WriteLn(Format('%.4g %.4g %.4g', [Cos(1), Cos(0), Cos(0.5)]));
+  Cos(0.5);
   ReadLn;
+
+  k := 1;
+  xk := x;
+  x2k1 := x;
+  sumRes := 0;
+
+  while k <= n do
+  begin
+    sumRes := Exp(2/3 - k) / sqrt(xk + x2k1);
+    xk := xk * x;
+    x2k1 := x2k1 * x * x;
+    k := k + 1;
+  end;
+
+  cosRes := Cos(x / n * PI);
+  Result := Exp(Ln(1 + cosRes * cosRes) / 3) * sumRes;
+end;
+
+begin
+  Solve(0.5, 11);
 end.
 
